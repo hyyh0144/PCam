@@ -1,0 +1,4 @@
+<Project Sdk="Microsoft.NET.Sdk"><PropertyGroup><OutputType>Exe</OutputType><TargetFramework>net8.0</TargetFramework><ImplicitUsings>enable</ImplicitUsings><Nullable>enable</Nullable></PropertyGroup><ItemGroup><Compile Remove="PlaybackSmoke/**;CompositionTests/**;RecordingTests/**;RecordingUi/**;DurableRecordingTests/**;ReviewTests/**"/><Compile Include="../windows/Receiver.cs" Link="Receiver.cs"/><Compile Include="../windows/Pairing.cs" Link="Pairing.cs"/><Compile Include="../windows/RateMeter.cs" Link="RateMeter.cs"/><Compile Include="../windows/VideoOutput.cs" Link="VideoOutput.cs"/><EmbeddedResource Include="../windows/Assets/Black.jpg" LogicalName="PCam.Black.jpg"/><FrameworkReference Include="Microsoft.AspNetCore.App"/><PackageReference Include="QRCoder" Version="1.6.0"/></ItemGroup></Project>
+
+
+

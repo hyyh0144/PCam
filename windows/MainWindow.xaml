@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Window x:Class="PhoneCam.MainWindow" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Title="PCam 0.15.1" Icon="pack://application:,,,/PCam;component/Assets/PCam.ico" Width="940" SizeToContent="Height" WindowStartupLocation="CenterScreen" MinWidth="780" MinHeight="680" Background="#F4F6FA">
+  <Grid Margin="20">
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition Width="310" />
+      <ColumnDefinition Width="20" />
+      <ColumnDefinition Width="*" />
+    </Grid.ColumnDefinitions>
+    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+      <StackPanel>
+        <TextBlock Text="手机扫码，立即连接" FontSize="23" FontWeight="SemiBold" />
+        <TextBlock Text="手机和电脑连接同一 Wi-Fi" Margin="0,8,0,12" Foreground="#505968" />
+        <Border Background="White" Padding="6.4" HorizontalAlignment="Left">
+          <Image x:Name="PairingQr" Width="225.6" Height="225.6" RenderOptions.BitmapScalingMode="NearestNeighbor" />
+        </Border>
+        <Button Content="刷新二维码并断开所有手机" Click="Reset" Padding="8" Margin="0,10,0,0" HorizontalAlignment="Left" />
+        <StackPanel xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Margin="0,12,0,0">
+          <StackPanel Orientation="Horizontal">
+            <Button x:Name="RecordToggle" Content="视频录制" ToolTip="录制合成画面与当前选中手机的声音；声音由手机端开关控制。" Click="ToggleRecording" Padding="8,5" />
+            <Button x:Name="RecordLocation" Content="选择保存位置" Click="ChooseRecordingFolder" Padding="8,5" Margin="8,0,0,0" />
+          </StackPanel>
+          <TextBlock x:Name="RecordFolder" Text="保存到：下载目录" FontSize="11" Foreground="#505968" TextTrimming="CharacterEllipsis" Margin="0,4,0,0" />
+          <TextBlock x:Name="RecordHint" Text="未录制 · 声音随手机开关" FontSize="11" Foreground="#505968" TextTrimming="CharacterEllipsis" Margin="0,4,0,0" />
+        </StackPanel>
+        <StackPanel Margin="0,12,0,0">
+          <TextBlock x:Name="Stats" Text="接收 0.00 Mbps · 0 fps" Foreground="#505968" FontSize="12" Margin="0" />
+          <TextBlock x:Name="Status" Text="正在准备二维码…" TextWrapping="Wrap" Margin="0,4,0,0" />
+          <TextBlock Text="手机列表 · 拖动叠加，双击设为主画面" Margin="0,4,0,0" FontWeight="SemiBold" />
+          <ListBox x:Name="Devices" Height="110" DisplayMemberPath="Label" SelectionChanged="SelectDevice" AllowDrop="True" PreviewMouseLeftButtonDown="DeviceDown" PreviewMouseMove="DeviceMove" MouseDoubleClick="DeviceDoubleClick" PreviewDragOver="DeviceDragOver" PreviewDragEnter="DeviceDragOver" PreviewDrop="DeviceDrop" DragLeave="DeviceDragLeave" PreviewMouseRightButtonDown="DeviceRightClick" Margin="0,4,0,0" />
+          <TextBlock Text="电脑画面方向 · 当前选中手机" Margin="0,4,0,0" />
+          <StackPanel Orientation="Horizontal" Margin="0,4,0,0">
+            <Button x:Name="RotatePicture" Content="旋转画面" Click="RotateSelectedPicture" Padding="5" IsEnabled="False" ToolTip="当前选中手机画面顺时针旋转 90°" />
+            <Button x:Name="RotationReset" Content="恢复方向" Click="ResetSelectedRotation" Padding="5" Margin="6,0,0,0" IsEnabled="False" />
+          </StackPanel>
+          <TextBlock x:Name="RotationHint" Text="选择手机后可独立旋转，输出画面同步。" FontSize="11" Foreground="#505968" TextWrapping="Wrap" Margin="0,4,0,0" />
+          <StackPanel Orientation="Horizontal" Margin="0,4,0,0">
+            <ComboBox x:Name="SoundSource" FontFamily="Microsoft YaHei" FontSize="12" FontWeight="Normal" TextOptions.TextFormattingMode="Display" TextOptions.TextRenderingMode="ClearType" VerticalContentAlignment="Center" Width="90" SelectedIndex="0" SelectionChanged="ChangeSoundSource">
+              <ComboBoxItem>
+                <TextBlock Text="手机麦克风" FontFamily="Microsoft YaHei" FontSize="12" FontWeight="Normal" TextOptions.TextFormattingMode="Display" TextOptions.TextRenderingMode="ClearType" />
+              </ComboBoxItem>
+              <ComboBoxItem>
+                <TextBlock Text="电脑麦克风" FontFamily="Microsoft YaHei" FontSize="12" FontWeight="Normal" TextOptions.TextFormattingMode="Display" TextOptions.TextRenderingMode="ClearType" />
+              </ComboBoxItem>
+            </ComboBox>
+            <Button FontFamily="Microsoft YaHei" FontSize="12" FontWeight="Normal" TextOptions.TextFormattingMode="Display" TextOptions.TextRenderingMode="ClearType" x:Name="SoundToggle" Content="静音手机声音" Click="ToggleSound" Margin="8,0,0,0" Padding="6" />
+          </StackPanel>
+          <TextBlock x:Name="SoundHint" Text="手机端开启声音后，播放当前选中手机的声音。" Foreground="#505968" FontSize="11" TextWrapping="Wrap" Margin="0,4,0,0" />
+          <TextBlock x:Name="CameraHint" Text="虚拟摄像头：准备中…" FontSize="11" TextWrapping="Wrap" Margin="0,4,0,0" Foreground="#505968" />
+        </StackPanel>
+      </StackPanel>
+    </ScrollViewer>
+    <Border Grid.Column="2" Background="#151B26" CornerRadius="12">
+      <Grid x:Name="PreviewArea" ClipToBounds="True">
+        <Image x:Name="Preview" Stretch="Uniform" />
+        <Canvas x:Name="EditLayer" Background="Transparent" MouseLeftButtonDown="PictureDown" MouseMove="PictureMove" MouseLeftButtonUp="PictureUp" LostMouseCapture="PictureCaptureLost" />
+        <TextBlock x:Name="CompositionHint" Text="连接手机后，画面会显示在这里" Foreground="#E2E8F0" Background="#B0151B26" Padding="8" HorizontalAlignment="Center" VerticalAlignment="Center" IsHitTestVisible="False" />
+      </Grid>
+    </Border>
+  </Grid>
+</Window>
+
+
+

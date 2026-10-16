@@ -1,0 +1,25 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup><OutputType>WinExe</OutputType><TargetFramework>net8.0-windows</TargetFramework><UseWPF>true</UseWPF><ImplicitUsings>enable</ImplicitUsings><Nullable>enable</Nullable><Version>0.15.1</Version><AssemblyName>PCam</AssemblyName><Product>PCam</Product><Title>PCam</Title><ApplicationIcon>Assets/PCam.ico</ApplicationIcon></PropertyGroup>
+  <ItemGroup><Resource Include="Assets/PCam.png" /><Resource Include="Assets/PCam.ico" /></ItemGroup>
+  <ItemGroup><InternalsVisibleTo Include="ReviewTests" /></ItemGroup>
+  <ItemGroup><EmbeddedResource Include="Assets/Black.jpg" LogicalName="PCam.Black.jpg" /></ItemGroup>
+  <ItemGroup><FrameworkReference Include="Microsoft.AspNetCore.App" /><PackageReference Include="NAudio" Version="2.2.1" /><PackageReference Include="QRCoder" Version="1.6.0" /></ItemGroup>
+  <ItemGroup><EmbeddedResource Include="../virtual-camera/build/PCamCamera.dll" LogicalName="PCam.Camera.dll" /></ItemGroup>
+  <ItemGroup><EmbeddedResource Include="../recorder/build/PCamRecorder.dll" LogicalName="PCam.Recorder.dll" /></ItemGroup>
+  <Target Name="RequireCameraComponent" BeforeTargets="PrepareForBuild">
+    <Error Condition="!Exists('$(MSBuildProjectDirectory)/../recorder/build/PCamRecorder.dll')" Text="缺少录制组件，请先运行 recorder/build-native.ps1。" />
+    <Error Condition="!Exists('$(MSBuildProjectDirectory)/../virtual-camera/build/PCamCamera.dll')" Text="缺少原生摄像头 DLL，请先运行 build-windows.ps1 或 virtual-camera/build-native.ps1。" />
+  </Target>
+</Project>
+
+
+
+
+
+
+
+
+
+
+
+

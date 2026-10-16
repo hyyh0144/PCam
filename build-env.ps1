@@ -1,0 +1,10 @@
+$toolRoot=Join-Path (Split-Path $PSScriptRoot) 'tools'
+$env:DOTNET_ROOT=Join-Path $toolRoot 'dotnet'
+$env:DOTNET_CLI_HOME=Join-Path $toolRoot 'dotnet-home'
+$env:APPDATA=Join-Path $toolRoot 'profile/Roaming'
+$env:LOCALAPPDATA=Join-Path $toolRoot 'profile/Local'
+$env:DOTNET_CLI_TELEMETRY_OPTOUT='1'
+$env:DOTNET_ADD_GLOBAL_TOOLS_TO_PATH='0'
+$env:JAVA_HOME=(Get-ChildItem (Join-Path $toolRoot 'jdk') -Directory | Select-Object -First 1).FullName
+$env:ANDROID_HOME=Join-Path $toolRoot 'android-sdk'
+$env:PATH="$env:DOTNET_ROOT;$env:JAVA_HOME/bin;$env:PATH"

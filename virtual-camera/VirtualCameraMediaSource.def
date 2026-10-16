@@ -1,0 +1,13 @@
+; Based on Microsoft Windows-Camera / VirtualCamera.
+; Reference: https://github.com/microsoft/Windows-Camera/blob/c1bd9e099f15c2ecf735216c7dd065cdb02a803f/Samples/VirtualCamera/VirtualCameraMediaSource/VirtualCameraMediaSource.def
+; Microsoft sample portions: MIT; see Microsoft-LICENSE.txt.
+; PCam changes: Preserves COM exports; adds PcStart/PcWrite/PcStop/PcRegister/PcUnregister.
+; Import revision was not recorded; reference revision is documented in ../SOURCES.md.
+EXPORTS
+DllCanUnloadNow = WINRT_CanUnloadNow  PRIVATE
+DllGetClassObject                     PRIVATE
+PcStart
+PcWrite
+PcStop
+PcRegister
+PcUnregister
