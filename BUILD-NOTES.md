@@ -23,6 +23,8 @@
 
 ## Windows
 
+GitHub云端构建使用`.github/workflows/build.yml`，由Windows Server 2022 runner的MSVC与Windows 11 SDK编译原生组件，WIL固定到1.0.250325.1对应提交并核对下载摘要。.NET依赖通过`ci/NuGet.Config`从官方NuGet源还原，不依赖本机`tools/`。本机构建继续使用下列便携工具入口。
+
 ```powershell
 . ./build-env.ps1
 ./build-windows.ps1
@@ -51,6 +53,14 @@ PCam从Android0.12.6起使用RSA4096专用发布密钥，证书SHA256为：
 
 Java编译不能仅用桌面`--release 8`加普通classpath中的`android.jar`代替Android引导API，否则可能生成旧Android不存在的方法签名。构建中的DEX检查会拦截已知的`ConcurrentHashMap.keySet():KeySetView`调用。
 
-## 测试
+## GitHub Actions
+
+推送main的构建相关文件会自动触发，也可以在Actions的“Build PCam”页面选择Run workflow。两个任务分别生成Windows exe与已签名Android apk，并上传为`PCam-Windows`、`PCam-Android`构建附件，保留30天。工作流不自动发布Releases。
+
+Android需要维护者在仓库Actions Secrets中配置`PCAM_KEYSTORE_BASE64`、`PCAM_STORE_PASSWORD`与`PCAM_KEY_PASSWORD`。Base64只是传输编码，密钥必须放入Secret，不得写入源码。签名仅在官方仓库main分支构建中使用，不触发PR签名构建；临时密钥文件在任务结束时删除，最终APK按上文公开指纹检查。Secrets缺失时失败，不生成临时签名。独立分支使用自己的密钥时需相应修改仓库限制及公开指纹检查。
+
+Actions仅有代码只读权限，引用的actions固定到完整提交SHA。下载构建附件需要登录GitHub。构建机器不包含摄像头硬件，编译和协议测试不能替代Windows11及手机真机测试。
+
+## 测试方法
 
 测试入口和所需工具见[TESTING.md](TESTING.md)。

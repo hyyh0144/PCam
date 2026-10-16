@@ -1,6 +1,6 @@
 <p align="center"><img src="assets/PCam-preview.png" width="112" alt="PCam"></p>
 
-# PCam — 让手机成为电脑的眼睛
+<h1 align="center">PCam — 让手机成为电脑的眼睛</h1>
 
 PCam 将 Android 手机的摄像头画面传到 Windows 电脑，支持多机位合成、虚拟摄像头输出和本地录像。适合桌面教学、作品展示、产品演示和会议补充机位。
 
@@ -44,7 +44,7 @@ PCam 将 Android 手机的摄像头画面传到 Windows 电脑，支持多机位
 
 首次安装或更新虚拟摄像头组件需要**管理员权限**，请允许 Windows 的权限请求。网络开启客户端隔离时，设备可能无法互相连接。
 
-安装包文件名为 `PCam-0.15.1.exe` 和 `PCam-0.12.6.apk`，发布后可在仓库 Releases 中获取。
+安装包文件名为 `PCam-0.15.1.exe` 和 `PCam-0.12.6.apk`。在仓库[Actions](https://github.com/hyyh0144/PCam/actions/workflows/build.yml)打开成功的“Build PCam”记录，从Artifacts下载`PCam-Windows`和`PCam-Android`并解压。构建附件保留30天，下载需要登录GitHub。
 
 Android从0.12.6起使用专用发布签名。已安装旧调试签名版本的用户，需要先卸载旧版再安装，手机端应用设置会被清除。后续发布将沿用这把发布密钥。
 

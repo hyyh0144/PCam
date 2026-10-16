@@ -1,0 +1,75 @@
+name: Build PCam
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/build.yml'
+      - 'ci/**'
+      - 'windows/**'
+      - 'android/**'
+      - 'recorder/**'
+      - 'virtual-camera/**'
+      - 'tests/**'
+      - 'NuGet.Config'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pcam-build-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  windows:
+    name: Windows exe
+    runs-on: windows-2022
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68 # v6.0.0
+        with:
+          dotnet-version: '8.0.x'
+      - name: Build native components, test protocol and publish
+        shell: pwsh
+        run: ./ci/build-windows.ps1
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: PCam-Windows
+          path: |
+            releases/PCam-*.exe
+            releases/SHA256SUMS-windows.txt
+          if-no-files-found: error
+          retention-days: 30
+
+  android:
+    name: Signed Android apk
+    if: github.repository == 'hyyh0144/PCam' && github.ref == 'refs/heads/main'
+    runs-on: windows-2022
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-java@b843ebf9b913146b38da2eaa7aeddf76074ae1ad # v6.1.0
+        with:
+          distribution: temurin
+          java-version: '17'
+      - name: Test, build and verify release signature
+        shell: pwsh
+        env:
+          PCAM_KEYSTORE_BASE64: ${{ secrets.PCAM_KEYSTORE_BASE64 }}
+          PCAM_STORE_PASSWORD: ${{ secrets.PCAM_STORE_PASSWORD }}
+          PCAM_KEY_PASSWORD: ${{ secrets.PCAM_KEY_PASSWORD }}
+        run: ./ci/build-android.ps1
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: PCam-Android
+          path: |
+            releases/PCam-*.apk
+            releases/SHA256SUMS-android.txt
+          if-no-files-found: error
+          retention-days: 30
