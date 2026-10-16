@@ -7,7 +7,7 @@ if(!(Test-Path -LiteralPath "$PSScriptRoot/virtual-camera/build/PCamCamera.dll")
 $dotnet=Join-Path (Split-Path $PSScriptRoot) 'tools/dotnet/dotnet.exe'
 & $dotnet publish "$PSScriptRoot/windows/PhoneCam.csproj" -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true -o "$PSScriptRoot/releases/windows"
 if($LASTEXITCODE -ne 0){throw 'Windows publish failed'}
-Copy-Item -LiteralPath "$PSScriptRoot/releases/windows/PCam.exe" -Destination "$PSScriptRoot/releases/PCam-0.15.1.exe" -Force
+Copy-Item -LiteralPath "$PSScriptRoot/releases/windows/PCam.exe" -Destination "$PSScriptRoot/releases/PCam-0.15.2.exe" -Force
 
 
 

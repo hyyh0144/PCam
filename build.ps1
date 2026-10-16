@@ -38,7 +38,7 @@ if($Test){
 }
 & "$PSScriptRoot/android/build-direct.ps1" -Sdk $sdk -Jdk $jdk
 & $dotnet publish "$PSScriptRoot/windows/PhoneCam.csproj" -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true -o "$PSScriptRoot/releases/windows";CheckExit
-Copy-Item -LiteralPath "$PSScriptRoot/releases/windows/PCam.exe" -Destination "$PSScriptRoot/releases/PCam-0.15.1.exe" -Force
+Copy-Item -LiteralPath "$PSScriptRoot/releases/windows/PCam.exe" -Destination "$PSScriptRoot/releases/PCam-0.15.2.exe" -Force
 Write-Host "编译工程：$PSScriptRoot"
 Write-Host "成品目录：$PSScriptRoot/releases"
 

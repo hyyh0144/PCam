@@ -1,5 +1,5 @@
 <Project Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup><OutputType>WinExe</OutputType><TargetFramework>net8.0-windows</TargetFramework><UseWPF>true</UseWPF><ImplicitUsings>enable</ImplicitUsings><Nullable>enable</Nullable><Version>0.15.1</Version><AssemblyName>PCam</AssemblyName><Product>PCam</Product><Title>PCam</Title><ApplicationIcon>Assets/PCam.ico</ApplicationIcon></PropertyGroup>
+  <PropertyGroup><OutputType>WinExe</OutputType><TargetFramework>net8.0-windows</TargetFramework><UseWPF>true</UseWPF><ImplicitUsings>enable</ImplicitUsings><Nullable>enable</Nullable><Version>0.15.2</Version><AssemblyName>PCam</AssemblyName><Product>PCam</Product><Title>PCam</Title><ApplicationIcon>Assets/PCam.ico</ApplicationIcon></PropertyGroup>
   <ItemGroup><Resource Include="Assets/PCam.png" /><Resource Include="Assets/PCam.ico" /></ItemGroup>
   <ItemGroup><InternalsVisibleTo Include="ReviewTests" /></ItemGroup>
   <ItemGroup><EmbeddedResource Include="Assets/Black.jpg" LogicalName="PCam.Black.jpg" /></ItemGroup>

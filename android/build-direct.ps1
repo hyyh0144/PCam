@@ -30,12 +30,12 @@ Run "$Jdk/bin/java.exe" @('-cp',"$tools/lib/d8.jar",'com.android.tools.r8.D8','-
 $manifest = (Get-Content "$PSScriptRoot/app/src/main/AndroidManifest.xml" -Raw).Replace('<manifest ', '<manifest package="cn.phonecam" ')
 Set-Content -LiteralPath "$stage/AndroidManifest.xml" -Value $manifest -Encoding utf8
 Run "$tools/aapt2.exe" @('compile','--dir',"$PSScriptRoot/app/src/main/res",'-o',"$stage/resources.zip")
-Run "$tools/aapt2.exe" @('link','-I',$platform,'--manifest',"$stage/AndroidManifest.xml",'--min-sdk-version','26','--target-sdk-version','35','--version-code','26','--version-name','0.12.6','-o',"$stage/unsigned.apk","$stage/resources.zip")
+Run "$tools/aapt2.exe" @('link','-I',$platform,'--manifest',"$stage/AndroidManifest.xml",'--min-sdk-version','26','--target-sdk-version','35','--version-code','27','--version-name','0.12.7','-o',"$stage/unsigned.apk","$stage/resources.zip")
 Run "$Jdk/bin/jar.exe" @('uf',"$stage/unsigned.apk",'-C',"$stage/dex",'classes.dex')
 Run "$tools/zipalign.exe" @('-f','4',"$stage/unsigned.apk","$stage/aligned.apk")
 $release = Join-Path $PSScriptRoot '../releases'
 New-Item -ItemType Directory -Force -Path $release | Out-Null
-$apk = "$release/PCam-0.12.6.apk"
+$apk = "$release/PCam-0.12.7.apk"
 Run "$Jdk/bin/java.exe" @('-jar',"$tools/lib/apksigner.jar",'sign','--ks',$KeyStore,'--ks-pass','env:PCAM_STORE_PASSWORD','--key-pass',"env:$keyPasswordVariable",'--out',$apk,"$stage/aligned.apk")
 Run "$Jdk/bin/java.exe" @('-jar',"$tools/lib/apksigner.jar",'verify','--verbose',$apk)
 Write-Host "APK 已生成：$apk"

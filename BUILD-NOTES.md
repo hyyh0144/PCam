@@ -1,6 +1,6 @@
 # 构建
 
-版本：Windows0.15.1、Android0.12.6。Windows程序由C#和两个原生组件组成；Android程序使用Java与ZXing。
+版本：Windows0.15.2、Android0.12.7。Windows程序由C#和两个原生组件组成；Android程序使用Java与ZXing。
 
 ## 工具
 
@@ -41,7 +41,7 @@ GitHub云端构建使用`.github/workflows/build.yml`，由Windows Server 2022 r
 ./android/build-direct.ps1 -Sdk $env:ANDROID_HOME -Jdk $env:JAVA_HOME
 ```
 
-该脚本使用Android引导API、官方编译打包工具及D8，输出`releases/PCam-0.12.6.apk`。签名工具从环境变量读取密码，命令行不携带密码值。覆盖已有安装必须使用匹配的签名，私钥不应提交到仓库。独立分支维护者需要自行创建并保管签名密钥，不能用新密钥覆盖安装官方版本。
+该脚本使用Android引导API、官方编译打包工具及D8，输出`releases/PCam-0.12.7.apk`。签名工具从环境变量读取密码，命令行不携带密码值。覆盖已有安装必须使用匹配的签名，私钥不应提交到仓库。独立分支维护者需要自行创建并保管签名密钥，不能用新密钥覆盖安装官方版本。
 
 PCam从Android0.12.6起使用RSA4096专用发布密钥，证书SHA256为：
 
@@ -55,11 +55,11 @@ Java编译不能仅用桌面`--release 8`加普通classpath中的`android.jar`�
 
 ## GitHub Actions
 
-推送main的构建相关文件会自动触发，也可以在Actions的“Build PCam”页面选择Run workflow。两个任务分别生成Windows exe与已签名Android apk，并上传为`PCam-Windows`、`PCam-Android`构建附件，保留30天。工作流不自动发布Releases。
+推送 main 会自动触发，也可以在 Actions 的“Build PCam”页面选择 Run workflow。两个任务分别生成 Windows exe 与已签名 Android apk，并上传为 `PCam-Windows`、`PCam-Android` 构建附件，保留 30 天。两端任务均成功后，独立发布任务校验文件摘要，先将 exe、apk 及两份 SHA256 清单上传到草稿，再将其发布到 [Releases](https://github.com/hyyh0144/PCam/releases/latest)。标签格式为 `v电脑版本-android-v手机版本`，对应本次构建的确切提交。
 
 Android需要维护者在仓库Actions Secrets中配置`PCAM_KEYSTORE_BASE64`、`PCAM_STORE_PASSWORD`与`PCAM_KEY_PASSWORD`。Base64只是传输编码，密钥必须放入Secret，不得写入源码。签名仅在官方仓库main分支构建中使用，不触发PR签名构建；临时密钥文件在任务结束时删除，最终APK按上文公开指纹检查。Secrets缺失时失败，不生成临时签名。独立分支使用自己的密钥时需相应修改仓库限制及公开指纹检查。
 
-Actions仅有代码只读权限，引用的actions固定到完整提交SHA。下载构建附件需要登录GitHub。构建机器不包含摄像头硬件，编译和协议测试不能替代Windows11及手机真机测试。
+构建任务仅有代码只读权限；独立发布任务获得 contents:write 和 actions:read，通过临时 GITHUB_TOKEN 创建 Release，不额外保存个人访问令牌。引用的 actions 固定到完整提交 SHA。发布仅在官方仓库 main 上运行；两端任一失败则不发布，上传不完整则保留草稿。相同提交重复构建会保留已经发布的安装包；同版本指向不同提交会失败，必须先升级版本号。公开 Releases 安装包无需登录下载；Actions 附件仍需登录。构建机器不包含摄像头硬件，编译和协议测试不能替代 Windows 11 及手机真机测试。
 
 ## 测试方法
 

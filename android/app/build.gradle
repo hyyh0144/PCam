@@ -3,7 +3,7 @@ plugins { id 'com.android.application' }
 android {
     namespace 'cn.phonecam'
     compileSdk 35
-    defaultConfig { applicationId 'cn.phonecam'; minSdk 26; targetSdk 35; versionCode 26; versionName '0.12.6' }
+    defaultConfig { applicationId 'cn.phonecam'; minSdk 26; targetSdk 35; versionCode 27; versionName '0.12.7' }
 }
 dependencies { implementation files('libs/core-3.5.3.jar') }
 
