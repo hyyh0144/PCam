@@ -1,6 +1,6 @@
 <p align="center"><img src="assets/PCam-preview.png" width="112" alt="PCam"></p>
 
-# PCam
+# PCam — 让手机成为电脑的眼睛
 
 PCam 将 Android 手机的摄像头画面传到 Windows 电脑，支持多机位合成、虚拟摄像头输出和本地录像。适合桌面教学、作品展示、产品演示和会议补充机位。
 
